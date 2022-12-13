@@ -1,0 +1,15 @@
+@rollup/plugin-json 处理json格式
+@rollup/plugin-node-resolve 处理第三方插件
+execa 解决包继承
+rollup 打包工具
+rollup-plugin-typescript2 解析ts
+
+buildOptions是自定义属性
+ "formats":[
+      "esm-bundler", // 处理js
+      "cjs", // 处理commonjs 处理node的
+      "global" // 处理全局属性
+    ]
+
+打包方式monerepo 对package的每一个包进行打包 
+ 1.获取打包目录 由node提供的方法
