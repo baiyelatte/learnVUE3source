@@ -9,5 +9,6 @@
       "esm-bundler",
       "cjs"
     ]
-  }
+  },
+  "type": "module"
 }

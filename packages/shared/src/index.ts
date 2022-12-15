@@ -1,4 +1,4 @@
-let ac = 32
-export {
-    ac
+
+export function isObject(target) {
+    return typeof target === 'object' && target != null
 }

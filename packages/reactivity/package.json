@@ -10,5 +10,6 @@
       "cjs",
       "global"
     ]
-  }
+  },
+  "type": "module"
 }
