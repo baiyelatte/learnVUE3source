@@ -1,1 +1,0 @@
-{"version":3,"file":"shared.esm-bundler.js","sources":["../src/index.ts"],"sourcesContent":["let ac = 1\r\nexport {\r\n    ac\r\n}"],"names":[],"mappings":"AAAI,IAAA,EAAE,GAAG;;;;"}
