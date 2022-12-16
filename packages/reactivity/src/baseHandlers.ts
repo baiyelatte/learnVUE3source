@@ -1,13 +1,21 @@
 import { isObject } from "@vue/shared";
 import { readonly, reactive } from "./reactive";
+import { Track } from "./effect";
+const enum TrackEnum {
+    GET = 'get',
+    HAS = 'has',
+    ITERATE = 'iterate',
+}
+
 function createGet(isReadonly = false, isShallow = false) {
     return function get(target, key, prototype) {
         const res = Reflect.get(target, key, prototype)
         if (isShallow) { //浅层
             return res  //proxy默认代理浅层
         }
-        if (isReadonly) { //只读
-            //收集依赖
+        if (!isReadonly) { //只读
+            // 在git操作下进行收集依赖
+            Track(target, TrackEnum.GET, key)
         }
         if (isObject(res)) {
             return isReadonly ? readonly(res) : reactive(res)

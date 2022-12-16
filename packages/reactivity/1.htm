@@ -11,11 +11,27 @@
 <body>
     <script src="./dist/reactivity.global.js"></script>
     <script>
-        let { reactive, readonly, shallowReactive, shallowReadonly } = VueReactivity
+        let { reactive, readonly, shallowReactive, shallowReadonly, effect } = VueReactivity
         console.log(readonly);
-        const a = readonly({ name: 1, list: { sex: 0 } })
+        const a = reactive({ name: 1, list: { sex: 0 } })
         // a.name = 3
-        console.log(a.list);
+        // console.log(a.list);
+        // effect(() => {
+        //     a.name
+        //     a.name++
+        //     a.name++
+        //     effect(() => {
+        //         a.list
+        //     })
+        //     a.list.sex
+        //     a.list.sex++
+        // })
+        effect(()=>{
+            a.name
+        })
+        effect(()=>{
+            a.name
+        })
     </script>
 </body>
 

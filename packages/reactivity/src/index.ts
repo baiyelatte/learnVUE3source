@@ -3,3 +3,4 @@
 // let a = 2
 // let b = ac
 export { reactive, shallowReactive, readonly, shallowReadonly } from './reactive'
+export { effect } from './effect'
