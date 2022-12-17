@@ -1,6 +1,7 @@
 import { isObject } from "@vue/shared";
 import { readonly, reactive } from "./reactive";
 import { Track } from "./effect";
+import { isArray, isInteger, hasOwn } from "./utils"
 const enum TrackEnum {
     GET = 'get',
     HAS = 'has',
@@ -27,9 +28,11 @@ function createGet(isReadonly = false, isShallow = false) {
 function createSet(isShallow = false) {
     return function get(target, key, value, prototype) {
         const res = Reflect.set(target, key, value, prototype)
-        // if(isShallow){
-        //     return 
-        // }
+        // 获取老值
+        const oldValue = target[key]
+        // 判断是不是数组 数组的key是不是整数如果是执行数组的逻辑，如果不是执行对象的逻辑
+        let isTrue = isArray(target) && isInteger(key) ? Number(key) < target.length : hasOwn(target, key)
+        // 如果isTrue为true则是修改，为false则是新增
         return res
     }
 }

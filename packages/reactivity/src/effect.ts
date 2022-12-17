@@ -4,7 +4,7 @@ let activeEffect // 保存当前的effect传入的函数
 let effectStack = []  //定义一个栈结构结果effect的嵌套问题
 function createEffect(fn, options) {
     const effect = function reactiveEffect() {
-        if(!effectStack.includes(effect)) {
+        if (!effectStack.includes(effect)) {
             try {
                 effectStack.push(effect)
                 activeEffect = effect
@@ -34,8 +34,30 @@ export function effect(fn, options: any = { lazy: false }) {
 }
 
 // 3收集依赖函数
+let targetWeakMap = new WeakMap()
 export function Track(target, type, key) {
     // console.log(target, type, key, activeEffect);
     console.log(effectStack);
-    
+    if (activeEffect === undefined) {
+        return
+    }
+    let targetMap = targetWeakMap.get(target)
+    if (!targetMap) {
+        targetWeakMap.set(target, (targetMap = new Map))
+    }
+    let targetDepMap = targetMap.get(key)
+    if (!targetDepMap) {
+        targetMap.set(key, (targetDepMap = new Set))// key，key对应的方法
+    }
+    if (!targetDepMap.has(activeEffect)) {
+        targetDepMap.add(activeEffect)
+    }
+    console.log(targetWeakMap);
+    /**
+     * 0
+: 
+{Object => Map(1)}
+key: {name: 1, list: {…}}
+value: Map(1) {'name' => Set(1)
+     */
 }
