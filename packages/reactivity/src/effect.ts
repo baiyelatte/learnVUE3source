@@ -9,7 +9,7 @@ function createEffect(fn, options) {
                 effectStack.push(effect)
                 activeEffect = effect
                 fn()
-                console.log(fn);
+                console.log(fn,1);
             } finally {
                 effectStack.pop()
                 activeEffect = effectStack[effectStack.length - 1]
