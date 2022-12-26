@@ -8,6 +8,13 @@ const enum TrackEnum {
     ITERATE = 'iterate',
 }
 
+const  enum TriggerEnmu {
+    ADD = 'add',
+    EDIT = 'edit'
+}
+function trigger(...[]) {
+
+}
 function createGet(isReadonly = false, isShallow = false) {
     return function get(target, key, prototype) {
         const res = Reflect.get(target, key, prototype)
@@ -26,13 +33,23 @@ function createGet(isReadonly = false, isShallow = false) {
 }
 
 function createSet(isShallow = false) {
-    return function get(target, key, value, prototype) {
+    return function set(target, key, value, prototype) {
         const res = Reflect.set(target, key, value, prototype)
         // 获取老值
         const oldValue = target[key]
         // 判断是不是数组 数组的key是不是整数如果是执行数组的逻辑，如果不是执行对象的逻辑
         let isTrue = isArray(target) && isInteger(key) ? Number(key) < target.length : hasOwn(target, key)
         // 如果isTrue为true则是修改，为false则是新增
+        if (!isTrue) {
+            // 新增
+            // 对象，新增，键，值
+            trigger(target, TriggerEnmu.ADD, key, value)
+        } else {
+            // 对象，新增，键，新值，老值
+            if (value !== oldValue) {
+                trigger(target, TriggerEnmu.EDIT, key, value, oldValue)
+            }
+        }
         return res
     }
 }
@@ -44,10 +61,12 @@ const shallowReadonlyGet = createGet(true, true)
 const set = createSet()
 const shallowSet = createSet(true)
 const reactiveHandlers = {
-    get: reactiveGet
+    get: reactiveGet,
+    set
 }
 const shallowReactiveHandlers = {
-    get: shallowReactiveGet
+    get: shallowReactiveGet,
+    set: shallowSet
 }
 const readonlyHandlers = {
     get: readonlyGet,
