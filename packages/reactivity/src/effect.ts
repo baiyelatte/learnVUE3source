@@ -9,7 +9,6 @@ function createEffect(fn, options) {
                 effectStack.push(effect)
                 activeEffect = effect
                 fn()
-                console.log(fn,1);
             } finally {
                 effectStack.pop()
                 activeEffect = effectStack[effectStack.length - 1]
@@ -37,7 +36,6 @@ export function effect(fn, options: any = { lazy: false }) {
 let targetWeakMap = new WeakMap()
 export function Track(target, type, key) {
     // console.log(target, type, key, activeEffect);
-    console.log(effectStack);
     if (activeEffect === undefined) {
         return
     }
@@ -52,7 +50,6 @@ export function Track(target, type, key) {
     if (!targetDepMap.has(activeEffect)) {
         targetDepMap.add(activeEffect)
     }
-    console.log(targetWeakMap);
     /**
      * 0
 : 
@@ -60,4 +57,12 @@ export function Track(target, type, key) {
 key: {name: 1, list: {…}}
 value: Map(1) {'name' => Set(1)
      */
+}
+
+export const  enum TriggerEnmu {
+    ADD = 'add',
+    EDIT = 'edit'
+}
+export function trigger(target, type, key, newValue, oldValue?) {
+    console.log(target, type, key, newValue, oldValue);
 }

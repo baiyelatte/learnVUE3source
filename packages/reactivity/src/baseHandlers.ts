@@ -1,6 +1,6 @@
 import { isObject } from "@vue/shared";
 import { readonly, reactive } from "./reactive";
-import { Track } from "./effect";
+import { Track, trigger, TriggerEnmu } from "./effect";
 import { isArray, isInteger, hasOwn } from "./utils"
 const enum TrackEnum {
     GET = 'get',
@@ -8,13 +8,7 @@ const enum TrackEnum {
     ITERATE = 'iterate',
 }
 
-const  enum TriggerEnmu {
-    ADD = 'add',
-    EDIT = 'edit'
-}
-function trigger(...[]) {
 
-}
 function createGet(isReadonly = false, isShallow = false) {
     return function get(target, key, prototype) {
         const res = Reflect.get(target, key, prototype)
@@ -34,9 +28,9 @@ function createGet(isReadonly = false, isShallow = false) {
 
 function createSet(isShallow = false) {
     return function set(target, key, value, prototype) {
+        const oldValue = target[key]
         const res = Reflect.set(target, key, value, prototype)
         // 获取老值
-        const oldValue = target[key]
         // 判断是不是数组 数组的key是不是整数如果是执行数组的逻辑，如果不是执行对象的逻辑
         let isTrue = isArray(target) && isInteger(key) ? Number(key) < target.length : hasOwn(target, key)
         // 如果isTrue为true则是修改，为false则是新增

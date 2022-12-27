@@ -12,8 +12,7 @@
     <script src="./dist/reactivity.global.js"></script>
     <script>
         let { reactive, readonly, shallowReactive, shallowReadonly, effect } = VueReactivity
-        console.log(readonly);
-        const a = reactive({ name: 1, list: { sex: 2 } })
+        const a = reactive({ name: 1, list: [1,2] })
         // a.name = 3
         // console.log(a.list);
         // effect(() => {
@@ -27,10 +26,9 @@
         //     a.list.sex++
         // })
         effect(()=>{
-            a.name
-            a.list,
             a.list
         })
+        a.list[1] = 4
     </script>
 </body>
 
