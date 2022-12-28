@@ -65,7 +65,7 @@ const shallowReactiveHandlers = {
 const readonlyHandlers = {
     get: readonlyGet,
     set: (target, key, prototype) => {
-        throw console.error('set on readonly');
+        throw console.error('set on readonly!');
     }
 }
 const shallowReadonlyHandlers = {
