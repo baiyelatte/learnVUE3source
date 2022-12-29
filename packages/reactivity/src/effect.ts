@@ -3,7 +3,7 @@ let uid = 0
 let activeEffect // 保存当前的effect传入的函数
 let effectStack = []  //定义一个栈结构结果effect的嵌套问题
 function createEffect(fn, options) {
-    const effect = function reactiveEffect() {
+    const effect  = function reactiveEffect() {
         if (!effectStack.includes(effect)) {
             try {
                 effectStack.push(effect)
@@ -65,4 +65,22 @@ export const  enum TriggerEnmu {
 }
 export function trigger(target, type, key, newValue, oldValue?) {
     console.log(target, type, key, newValue, oldValue);
+    const depsMap = targetWeakMap.get(target)
+    if (!depsMap) {
+        return
+    } else {
+
+    }
+    let effectSet = new Set() // 对收集依赖的函数进行去重,并存储
+    const add = (addEffect) => {
+        if (addEffect) {
+            addEffect.forEach(element => {
+                effectSet.add(element)
+            });
+        }
+    }
+    add(depsMap.get(key))
+    effectSet.forEach((item: any): void =>
+        item()
+    )
 }
