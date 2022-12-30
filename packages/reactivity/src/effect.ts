@@ -1,9 +1,10 @@
+import { isArray, isInteger, hasOwn } from "./utils"
 // 2.给收集到的依赖定义一个id确保唯一性
 let uid = 0
 let activeEffect // 保存当前的effect传入的函数
 let effectStack = []  //定义一个栈结构结果effect的嵌套问题
 function createEffect(fn, options) {
-    const effect  = function reactiveEffect() {
+    const effect = function reactiveEffect() {
         if (!effectStack.includes(effect)) {
             try {
                 effectStack.push(effect)
@@ -66,6 +67,8 @@ export const  enum TriggerEnmu {
 export function trigger(target, type, key, newValue, oldValue?) {
     console.log(target, type, key, newValue, oldValue);
     const depsMap = targetWeakMap.get(target)
+
+
     if (!depsMap) {
         return
     } else {
@@ -79,7 +82,33 @@ export function trigger(target, type, key, newValue, oldValue?) {
             });
         }
     }
-    add(depsMap.get(key))
+    // 当目标值是数组且key是length时
+    if (key === 'length' && isArray(target)) {
+        depsMap.forEach((item, key) => {
+            console.log(key,newValue,item);
+            
+            if (key === 'length' || key >= (newValue as Number)) {
+                add(item)
+            }
+        })
+    } else {
+        // 当目标值是对象时
+        if (key !== undefined) {
+            add(depsMap.get(key)) // 获取收集到的依赖
+        }
+        // 当目标值是数组对象时
+        switch (type) {
+            // 添加属性时
+            case TriggerEnmu.ADD:
+                if(isArray(target)&&isInteger(key))
+                break;
+        
+            default:
+                break;
+        }
+    }
+    console.log(effectSet, depsMap);
+    // 执行收集到的依赖
     effectSet.forEach((item: any): void =>
         item()
     )

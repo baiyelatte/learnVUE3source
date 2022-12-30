@@ -9,10 +9,11 @@
 </head>
 
 <body>
+    <div id="app"></div>
     <script src="./dist/reactivity.global.js"></script>
     <script>
         let { reactive, readonly, shallowReactive, shallowReadonly, effect } = VueReactivity
-        const a = reactive({ name: 1, list: [1,2] })
+        const a = reactive({ name: 1, list: [1,2,3] })
         // a.name = 3
         // console.log(a.list);
         // effect(() => {
@@ -26,9 +27,11 @@
         //     a.list.sex++
         // })
         effect(()=>{
-            a.list
+            document.querySelector('#app').innerHTML = a.list[6]
         })
-        a.list[1] = 4
+        setTimeout(() => {
+            a.list.length = 5
+        }, 2000);
     </script>
 </body>
 
