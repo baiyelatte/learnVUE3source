@@ -2,7 +2,7 @@ import { isObject } from "@vue/shared";
 import { readonly, reactive } from "./reactive";
 import { Track, trigger, TriggerEnmu } from "./effect";
 import { isArray, isInteger, hasOwn } from "./utils"
-const enum TrackEnum {
+export const enum TrackEnum {
     GET = 'get',
     HAS = 'has',
     ITERATE = 'iterate',

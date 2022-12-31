@@ -20,7 +20,7 @@ function createEffect(fn, options) {
     effect._isEffect = true // 这个effect是不是响应式
     effect.raw = fn // 保存传入的方法
     effect.options = options // 保存传入的配置项
-
+    
     return effect
 }
 // 1声明effeft函数
@@ -51,6 +51,8 @@ export function Track(target, type, key) {
     if (!targetDepMap.has(activeEffect)) {
         targetDepMap.add(activeEffect)
     }
+    console.log(targetWeakMap);
+    
     /**
      * 0
 : 
@@ -71,9 +73,7 @@ export function trigger(target, type, key, newValue, oldValue?) {
 
     if (!depsMap) {
         return
-    } else {
-
-    }
+    } 
     let effectSet = new Set() // 对收集依赖的函数进行去重,并存储
     const add = (addEffect) => {
         if (addEffect) {
@@ -86,7 +86,7 @@ export function trigger(target, type, key, newValue, oldValue?) {
     if (key === 'length' && isArray(target)) {
         depsMap.forEach((item, key) => {
             console.log(key,newValue,item);
-            
+            // 当代理的是收集的依赖就是length 或者 收集的下标大于set的length时 此时间接（修改length会影响数组取值）的修改了收集了依赖所以需要重新执行effect依赖函数
             if (key === 'length' || key >= (newValue as Number)) {
                 add(item)
             }
@@ -98,16 +98,15 @@ export function trigger(target, type, key, newValue, oldValue?) {
         }
         // 当目标值是数组对象时
         switch (type) {
-            // 添加属性时
+            // 通过下标修改数组
             case TriggerEnmu.ADD:
-                if(isArray(target)&&isInteger(key))
-                break;
-        
-            default:
+                if(isArray(target)&&isInteger(key)){
+                    add(depsMap.get('length')) // 模板中的target.key是数组对象此时会收集除下标外包括tostring，length等属性，所以里面自动带有length的依赖，拿出来重新执行effect因为（修改length会影响数组取值）
+                }
                 break;
         }
     }
-    console.log(effectSet, depsMap);
+    console.log(effectSet, depsMap,targetWeakMap);
     // 执行收集到的依赖
     effectSet.forEach((item: any): void =>
         item()
