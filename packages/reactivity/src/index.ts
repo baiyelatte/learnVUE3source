@@ -4,4 +4,4 @@
 // let b = ac
 export { reactive, shallowReactive, readonly, shallowReadonly } from './reactive'
 export { effect } from './effect'
-export { ref, shallowRef } from './ref'
+export { ref, shallowRef, toRef, toRefs } from './ref'
