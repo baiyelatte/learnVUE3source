@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script src="./dist/reactivity.global.js"></script>
+    <script>
+        // ref 通过objcect.defineProperty进行数据劫持
+        let { reactive, effect, ref, toRef, computed } = VueReactivity
+        const a = ref('5')
+        // 参数为函数时
+        let aC = computed(() => {
+            console.log('缓存');
+            return a.value
+        })
+
+        // 参数为对象是包含一个get函数一个set函数
+        // let aC = computed({
+        //     get: () => {
+        //         console.log('缓存');
+        //         return a.value
+        //     },
+        //     set: (val) => {
+        //         console.log(100);
+        //         a.value = val
+        //     }
+        // })
+        console.log(aC.value);
+        console.log(aC.value);
+
+        setTimeout(() => {
+            a.value = 6
+            aC.value = 7
+            console.log(aC.value);
+        }, 1000);
+    </script>
+</body>
+
+</html>
