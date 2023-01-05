@@ -32,14 +32,15 @@
         //         a.value = val
         //     }
         // })
-        console.log(aC.value);
-        console.log(aC.value);
+        console.log(aC.value,6);
+        console.log(aC.value,6);
 
         setTimeout(() => {
             a.value = 6
-            aC.value = 7
-            console.log(aC.value);
+            console.log(aC.value,6);
         }, 1000);
+        // 计算属性中的缓存机制:将computed传入的get函数当作effect的参数传入（懒执行），a.value触发了track方法进行收集依赖,在第一次调用computed的时候执行computed的get方法并把缓存机制dirty赋值为false开启缓存
+        // 此时每次调用computed都只会返回上一次的返回值，在effect的第二个参数中传入一个函数将dirty赋值为true关闭缓存机制，此函数在trigger函数中执行，trigger函数在修改响应式的值时触发，以此实现缓存机制
     </script>
 </body>
 
