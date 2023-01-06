@@ -41,6 +41,7 @@ const outputOptions = {
     },
 }
 const formats = packageOptions.formats
+console.log(formats,66666);
 // 定义打包函数‘
 function createConfig(format, outputOption) {
     // 给打包配置添加一个name属性
