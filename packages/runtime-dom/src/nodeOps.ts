@@ -13,7 +13,7 @@ export const nodeOps = {
     },
     // 选择元素
     querySelector: (targetName: string) => {
-        document.querySelector(targetName)
+        return document.querySelector(targetName)
     },
     // 修改元素文本
     setElementText: (el: HTMLElement, text: string) => el.textContent = text,

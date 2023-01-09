@@ -1,15 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
+    <div id="app"></div>
     <script src="./dist/runtime-dom.global.js"></script>
     <script>
-        console.log(VueRuntimeDom,1);
+        console.log(VueRuntimeDom, 1);
+        let { creatApp } = VueRuntimeDom
+        let app = {
+            render() {
+                console.log('11');
+            }
+        }
+        let app1 = creatApp(app, { age: 100 })
+        app1.mount('#app')
+        console.log(app1.mount);
     </script>
 </body>
+
 </html>

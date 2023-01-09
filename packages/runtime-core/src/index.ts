@@ -1,4 +1,1 @@
-let a
-export {
-    a
-}
+export { createdRender } from './render'
