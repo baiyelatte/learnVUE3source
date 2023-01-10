@@ -22,6 +22,8 @@
         let app1 = creatApp(app, { age: 100 })
         app1.mount('#app')
         console.log(app1.mount);
+        // 1.渲染初始化将对象转为vnode 
+        // 2.组件初始化对vnode进行diff比对，再转为真实dom进行渲染
     </script>
 </body>
 

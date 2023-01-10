@@ -13,7 +13,7 @@
     <script src="./dist/reactivity.global.js"></script>
     <script>
         let { reactive, readonly, shallowReactive, shallowReadonly, effect } = VueReactivity
-        const a = reactive({ name: 1, list: [1,2,3],sex:{c:1} })
+        const a = reactive({ name: 1, list: [1, 2, 3], sex: { c: 1 } })
         // a.name = 3
         // console.log(a.list);
         // effect(() => {
@@ -30,11 +30,12 @@
 
 
         // 此时的依赖收集函数存入 并触发了 代理的对象的get方法， 以{target,{key,[effect]}}形式存入effect依赖数组,在set时再次调用effect依赖数组中的函数
-        effect(()=>{
-            document.querySelector('#app').innerHTML = a.list
+        effect(() => {
+            // document.querySelector('#app').innerHTML = a.list
+            a.sex.c
         })
         setTimeout(() => {
-            a.list[100] = 5
+            // a.list[100] = 5
         }, 2000);
     </script>
 </body>
