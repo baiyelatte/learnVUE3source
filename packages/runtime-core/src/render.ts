@@ -1,23 +1,26 @@
 import { shapeFlags } from "@vue/shared";
 import { apiCreateApp } from "./apiCreateApp";
+import { createComponentInstance, setupComponent, setupRenderEffect } from "./component";
 
 export const createdRender = (renderOptionDom) => {// 将组件变为vnode 再通过render函数进行渲染
     // 渲染函数
-    // 组件渲染流程
-    /**
-     * 1.先有一个组件的实例对象
-     * 2.解析数据到这个实例对象中
-     * 3.执行render
-     */
-    const mountComponent = (n2,dom)=> {
-
+    const mountComponent = (n2, dom) => {
+        // 组件渲染流程
+        /**
+         * 1.先有一个组件的实例对象
+         * 2.解析数据到这个实例对象中
+         * 3.执行render
+         */
+        const instance = n2.component = createComponentInstance(n2)
+        setupComponent(instance)
+        setupRenderEffect()
     }
     // 对组件的第一次加载以及更新进行操作
     const processComponent = (n1, n2, dom) => {
-        if(n1 === null) { // 第一次加载
-            mountComponent(n2,dom)
-        }else { // 更新操作
-            
+        if (n1 === null) { // 第一次加载
+            mountComponent(n2, dom)
+        } else { // 更新操作
+
         }
     }
     // 针对不同的类型 组件或元素 做不同的处理
