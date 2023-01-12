@@ -15,8 +15,8 @@
         console.log(VueRuntimeDom, 1);
         let { creatApp } = VueRuntimeDom
         let app = {
-            setup(){
-                console.log('nixx');
+            setup(proxy,context){
+                console.log('nixx',proxy,context);
             },
             render() {
                 console.log('11');
