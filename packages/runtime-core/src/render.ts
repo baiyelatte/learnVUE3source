@@ -1,5 +1,5 @@
-import { effect } from "@vue/reactivity";
-import { shapeFlags } from "@vue/shared";
+import { effect, isArray } from "@vue/reactivity";
+import { isObject, shapeFlags } from "@vue/shared";
 import { apiCreateApp } from "./apiCreateApp";
 import { createComponentInstance, setupComponent } from "./component";
 
@@ -52,17 +52,21 @@ export const createdRender = (renderOptionDom) => {// 将组件变为vnode 再�
     //---------------------------------------------------------处理元素---------------------------------------------------------------
     const mountElement = (n2, dom) => {
         // 递归渲染 =》dom操作 =》放到对应的地方
-        const {children,props,type,shapeFlag} = n2
+        const { children, props, type, shapeFlag } = n2
         // 创建元素
         let el = createElement(type)
         // 设置属性
-        if(props) {
-            for(let key in props) {
+        if (props) {
+            for (let key in props) {
                 patchProp(el, key, null, props[key])
             }
         }
+        if (!isObject(children) && !isArray(children)) {
+            setElementText(el, children)
+        }
+        inset(el, dom)
     }
-    // 对组件的第一次加载以及更新进行操作
+    // 对组件的第一次加载以及更新进行操作 
     const processElement = (n1, n2, dom) => {
         if (n1 === null) { // 第一次加载
             mountElement(n2, dom)
@@ -76,6 +80,7 @@ export const createdRender = (renderOptionDom) => {// 将组件变为vnode 再�
         if (shapeFlag & shapeFlags.ELEMENT) {
             // 对元素进行初始化
             console.log('元素');
+            processElement(n1, n2, dom)
         } else if (shapeFlag & shapeFlags.COMPONENT) {
             // 对组件进行初始化
             processComponent(n1, n2, dom)
