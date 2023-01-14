@@ -8,7 +8,6 @@ export const componentPublicInstance = {
         } else if (hasOwn(setupState, key)) {
             return setupState[key]
         }
-
     },
     set({ _: instance }, key, value) {
         const { props, setupState } = instance

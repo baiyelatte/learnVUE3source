@@ -1,4 +1,4 @@
-import { isFunction } from "@vue/reactivity"
+import { effect, isFunction } from "@vue/reactivity"
 import { isObject, shapeFlags } from "@vue/shared"
 import { componentPublicInstance } from "./componentPublic"
 
@@ -42,8 +42,8 @@ const setStateComponent = (instance) => {
         // 如果返回值是函数或者是对象做相应处理
         handleSetupResult(setupResult, instance)
     } else {
-        // 调用render
-        finishComponentSetup(instance)
+        // 处理render
+        // finishComponentSetup(instance)
     }
 
 }
@@ -52,8 +52,10 @@ const handleSetupResult = (setupResult, instance) => {
     if (isFunction(setupResult)) {
         instance.render = setupResult // 将setup返回的函数存入实例上
     } else if (isObject(setupResult)) {
-        instance.setupState = setupResult // 将setup返回的函数存入实例上
+        instance.setupState = setupResult // 将setup返回的对象存入实例上
     }
+    // 处理render
+    finishComponentSetup(instance)
 }
 // 处理render
 const finishComponentSetup = (instance) => {
@@ -75,8 +77,4 @@ const createContext = (instance) => {
         emit: () => { },
         expose: () => { }
     }
-}
-// 创建effect执行render函数
-export const setupRenderEffect = () => {
-
 }
