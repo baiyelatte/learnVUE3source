@@ -9,7 +9,7 @@ import { isArray, isString } from "@vue/reactivity"
 export const creatVnode = (type, props, children = null) => {
     // 区分是组件还是元素
     // let a = shapeFlag.ELEMENT
-    let shapeFlag = isString(type) ? shapeFlags.ELEMENT : isObject(type) ? shapeFlags.COMPONENT : 0
+    let shapeFlag = isString(type) ? shapeFlags.ELEMENT : isObject(type) ? shapeFlags.STATEFUL_COMPONENT : 0
     const vnode = {
         _v_isVnode: true, // 是否是一个虚拟节点
         type,
@@ -33,7 +33,9 @@ function normalizeChildren(vnode, children) {
     } else if (isArray(children)) {
         type = shapeFlags.ARRAY_CHILDREN
     } else {
-        type = shapeFlags.COMPONENT
+        // 文本
+        type = shapeFlags.TEXT_CHILDREN
     }
     vnode.shapeFlag = vnode.shapeFlag | type
+    
 }

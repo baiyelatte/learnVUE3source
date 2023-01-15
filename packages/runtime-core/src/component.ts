@@ -25,6 +25,8 @@ export const setupComponent = (instance) => {
     instance.children = children
     // 组件是否有状态
     let shapeFlag = instance.vnode.shapeFlag & shapeFlags.STATEFUL_COMPONENT
+    console.log(shapeFlag,11);
+    
     if (shapeFlag) {
         setStateComponent(instance)
     }
