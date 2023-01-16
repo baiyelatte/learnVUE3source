@@ -22,7 +22,7 @@
                 }
             },
             render(x) {
-                return h('div', { style: { color: "red" } }, 'hello')
+                return h('div', { style: { color: "red" } }, ['hello','world'])
             }
         }
         let app1 = creatApp(app, { age: 100 })

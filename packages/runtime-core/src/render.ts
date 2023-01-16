@@ -2,6 +2,7 @@ import { effect, isArray } from "@vue/reactivity";
 import { isObject, shapeFlags } from "@vue/shared";
 import { apiCreateApp } from "./apiCreateApp";
 import { createComponentInstance, setupComponent } from "./component";
+import { CVnode, TEXT } from "./vnode";
 
 export const createdRender = (renderOptionDom) => {// 将组件变为vnode 再通过render函数进行渲染
     console.log(renderOptionDom);
@@ -50,6 +51,15 @@ export const createdRender = (renderOptionDom) => {// 将组件变为vnode 再�
         }
     }
     //---------------------------------------------------------处理元素---------------------------------------------------------------
+    const mountChilrenComonent = (el, children) => {
+        // 循环
+        for (let i = 0; i < children.length; i++) {
+            // 如果是数组文本则转为vnode 如果是h函数则直接返回 ['text','text']  [h(),h()]
+            let child = CVnode(children[i])
+            patch(null, child, el)
+        }
+    }
+    // 挂载元素
     const mountElement = (n2, dom) => {
         // 递归渲染 =》dom操作 =》放到对应的地方
         const { children, props, type, shapeFlag } = n2
@@ -63,10 +73,20 @@ export const createdRender = (renderOptionDom) => {// 将组件变为vnode 再�
         }
         if (children) {
             if (shapeFlag & shapeFlags.TEXT_CHILDREN) {
+                // 设置文本内容
                 setElementText(el, children)
+            } else if (shapeFlag & shapeFlags.ARRAY_CHILDREN) {
+                // 递归渲染子集
+                mountChilrenComonent(el, children)
             }
         }
         inset(el, dom)
+    }
+    //---------------------------------------------------------处理文本---------------------------------------------------------------
+    const processText = (n1, n2, dom) => {
+        if (n1 === null) { // 第一次加载
+            inset(createText(n2.children), dom)
+        }
     }
     // 对组件的第一次加载以及更新进行操作 
     const processElement = (n1, n2, dom) => {
@@ -78,15 +98,22 @@ export const createdRender = (renderOptionDom) => {// 将组件变为vnode 再�
     }
     // 针对不同的类型 组件或元素 做不同的处理
     const patch = (n1, n2, dom) => {
-        let { shapeFlag } = n2
-        if (shapeFlag & shapeFlags.ELEMENT) {
-            // 对元素进行初始化
-            console.log('元素',shapeFlags.ELEMENT);
-            processElement(n1, n2, dom)
-        } else if (shapeFlag & shapeFlags.COMPONENT) {
-            // 对组件进行初始化
-            processComponent(n1, n2, dom)
+        let { shapeFlag, type } = n2
+        switch (type) {
+            case TEXT:
+                processText(n1, n2, dom)
+                break;
+            default:
+                if (shapeFlag & shapeFlags.ELEMENT) {
+                    // 对元素进行初始化
+                    console.log('元素', shapeFlags.ELEMENT);
+                    processElement(n1, n2, dom)
+                } else if (shapeFlag & shapeFlags.COMPONENT) {
+                    // 对组件进行初始化
+                    processComponent(n1, n2, dom)
+                }
         }
+
     }
     let render = (vnode, dom) => {
         // 组件初始化

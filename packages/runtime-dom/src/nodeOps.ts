@@ -19,7 +19,7 @@ export const nodeOps = {
     setElementText: (el: HTMLElement, text: string) => el.textContent = text,
     // 文本操作
     createText: (text) => {
-        document.createTextNode(text)
+        return document.createTextNode(text)
     },
     setText: (node, text) => {
         node.nodeValue = text

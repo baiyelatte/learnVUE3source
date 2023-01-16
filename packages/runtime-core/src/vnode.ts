@@ -15,7 +15,7 @@ export const creatVnode = (type, props, children = null) => {
         type,
         props,
         children,
-        component:{},
+        component: {},
         key: props && props.key, // diiff算法会用到
         el: null, // 真是dom和vnode 对应
         shapeFlag // 标识vnode
@@ -37,5 +37,14 @@ function normalizeChildren(vnode, children) {
         type = shapeFlags.TEXT_CHILDREN
     }
     vnode.shapeFlag = vnode.shapeFlag | type
-    
+}
+export const TEXT = Symbol('text')
+export const CVnode = (child) => {
+    if (isObject(child)) {
+        // 如果是是vnode则直接返回
+        return
+    } else {
+        // 如果是文本则转为vnode
+        return creatVnode(TEXT, null, String(child))
+    }
 }
