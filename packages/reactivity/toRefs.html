@@ -14,7 +14,7 @@
     <script>
         // ref 通过objcect.defineProperty进行数据劫持
         let { reactive, effect, ref, toRefs } = VueReactivity
-        const a = { b: 5,c:6,d:7 }
+        const a = { b: 5,c:6,d:8 }
         let {b,c,d} = toRefs(a)
         effect(() => {
             document.querySelector('#app').innerHTML = b.value+c.value

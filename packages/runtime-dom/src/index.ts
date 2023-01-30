@@ -14,3 +14,4 @@ export const creatApp = (rootComponent, rootProps) => {
     return app
 }
 export * from '@vue/runtime-core'
+export * from '@vue/reactivity'

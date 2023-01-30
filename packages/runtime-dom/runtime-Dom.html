@@ -13,16 +13,20 @@
     <script src="./dist/runtime-dom.global.js"></script>
     <script>
         console.log(VueRuntimeDom, 1);
-        let { creatApp, h } = VueRuntimeDom
+        let { creatApp, h, reactive } = VueRuntimeDom
         let app = {
             setup(proxy, context) {
-                console.log('nixx', proxy, context);
+                const state = reactive({ name: '张三' })
+                const fn = () => {
+                    state.name = '李四'
+                }
                 return {
-
+                    fn, state
                 }
             },
             render(x) {
-                return h('div', { style: { color: "red" } }, ['hello','world'])
+                console.log(x.state.name, 666);
+                return h('div', { style: { color: "red" }, onClick: x.fn }, ['hello', 'world', x.state.name])
             }
         }
         let app1 = creatApp(app, { age: 100 })
@@ -30,6 +34,13 @@
         console.log(app1.mount);
         // 1.渲染初始化将对象转为vnode
         // 2.组件初始化对vnode进行diff比对，再转为真实dom进行渲染
+        class PrimitiveNumber {
+            static [Symbol.hasInstance](x) {
+                return typeof x === 'string'
+            }
+        }
+       
+        console.log('111' instanceof  PrimitiveNumber) // true
     </script>
 </body>
 

@@ -27,6 +27,9 @@ export const createdRender = (renderOptionDom) => {// 将组件变为vnode 再�
                 console.log(a);
                 // 组件处理完毕，处理元素 调用patch
                 patch(null, a, dom)
+                instance.isMounted = true
+            } else {
+                console.log('跟新');
             }
         }, {})
     }
@@ -119,7 +122,6 @@ export const createdRender = (renderOptionDom) => {// 将组件变为vnode 再�
         // 组件初始化
         // 渲染第一次 三个参数分别是旧的,最新的，挂载位置
         patch(null, vnode, dom)
-
     }
     return {
         creatApp: apiCreateApp(render) // 创建vnode
