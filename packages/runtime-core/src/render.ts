@@ -109,7 +109,7 @@ export const createdRender = (renderOptionDom) => {// 将组件变为vnode 再�
             default:
                 if (shapeFlag & shapeFlags.ELEMENT) {
                     // 对元素进行初始化
-                    console.log('元，素', shapeFlags.ELEMENT);
+                    console.log('元，1素', shapeFlags.ELEMENT);
                     processElement(n1, n2, dom)
                 } else if (shapeFlag & shapeFlags.COMPONENT) {
                     // 对组件进行初始化
