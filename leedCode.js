@@ -39,13 +39,13 @@ var twoSum = function (nums, target) {
     // 通过对象映射
     const prever = {}
     for (let i = 0; i < nums.length; i++) {
-            const result = target - nums[i]
-            const num1 = prever[result]
-            if(num1 !== undefined) {
-                return [num1,i]
-            }else {
-                prever[nums[i]] = i
-            }
+        const result = target - nums[i]
+        const num1 = prever[result]
+        if (num1 !== undefined) {
+            return [num1, i]
+        } else {
+            prever[nums[i]] = i
+        }
     }
 };
 twoSum([2, 7, 11, 15], 9)
@@ -75,3 +75,35 @@ function decodeMessage(key, message) {
     return str
 };
 decodeMessage("the quick brown fox jumps over the lazy dog", "vkbs bs t suepuv")
+
+// 回溯算法
+var permute = function (nums) {
+    const res = [], path = [];
+    backtracking(nums, nums.length, []);
+    console.log(res);
+    return res;
+
+    function backtracking(n, k, used) {
+        console.log('递归');
+        if (path.length === k) {
+            res.push(Array.from(path));
+            return;
+        }
+        for (let i = 0; i < k; i++) {
+            console.log(i, '--');
+            if (used[i]) continue;
+            path.push(n[i]);
+            used[i] = true; // 同支
+            console.log(path, used, n[i]);
+
+            backtracking(n, k, used);
+            console.log('回溯');
+            path.pop();
+            used[i] = false;
+            console.log(path, used);
+        }
+    }
+};
+permute([1, 2, 3, 4]) // 第一次执行函数1入栈，然后进行递归生成第二个作用域，作用域2的for循环因为1已经入栈的原因continue跳出第一次循环，
+//然后执行第二次循环2入栈然后执行递归生成作用域3，作用域3的for循环因为1，2都入栈只会执行一次将3入栈，然后执行递归收割结果，进行回溯，回溯到作用域2
+//执行作用域2的for循环的第三次循环将3入栈，然后进入递归生成作用域4，然后因为1，3入栈所以作用域4的for循环只会执行一次将2入栈，然后递归收割结果，进行回溯，到此作用域1的for循环第一次循环结束
