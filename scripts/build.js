@@ -27,6 +27,6 @@ async function runParaller(dirs, itemfn) {
     return Promise.all(result) //result 是build函数返回的promise对象的集合利用all全部执行完成all才会返回结果的机制
 }
 runParaller(dirs, build).then(() => {
-    log('succes')
+    log('succes6')
 })
 log(dirs)
