@@ -16,7 +16,7 @@ export const creatVnode = (type, props, children = null) => {
         props,
         children,
         component: {},
-        key: props && props.key, // diiff算法会用到
+        key: props && Object.keys(props) , // diiff算法会用到
         el: null, // 真是dom和vnode 对应
         shapeFlag // 标识vnode
     }

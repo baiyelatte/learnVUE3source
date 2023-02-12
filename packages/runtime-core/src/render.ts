@@ -23,13 +23,21 @@ export const createdRender = (renderOptionDom) => {// 将组件变为vnode 再�
             // 判断组件是否是第一次加载
             if (!instance.isMounted) {
                 // 执行render，接下来创建渲染节点，h函数
-                let a = instance.render.call(instance.proxy, instance.proxy) // h函数的返回值为dom转化的vnode
-                console.log(a);
+                let subTree = instance.subTree = instance.render.call(instance.proxy, instance.proxy) // h函数的返回值为dom转化的vnode
+                console.log(subTree);
                 // 组件处理完毕，处理元素 调用patch
-                patch(null, a, dom)
+                patch(null, subTree, dom)
                 instance.isMounted = true
             } else {
                 console.log('跟新');
+                // 进行比对
+                let proxy = instance.proxy
+                // 旧的
+                const prevTree = instance.subTree
+                // 新的
+                const newTree = instance.render.call(proxy, proxy)
+                instance.subTree = newTree
+                patch(prevTree, newTree, dom)
             }
         }, {})
     }
@@ -67,7 +75,7 @@ export const createdRender = (renderOptionDom) => {// 将组件变为vnode 再�
         // 递归渲染 =》dom操作 =》放到对应的地方
         const { children, props, type, shapeFlag } = n2
         // 创建元素
-        let el = createElement(type)
+        let el = n2.el = createElement(type)
         // 设置属性
         if (props) {
             for (let key in props) {
@@ -99,9 +107,28 @@ export const createdRender = (renderOptionDom) => {// 将组件变为vnode 再�
 
         }
     }
-    // 针对不同的类型 组件或元素 做不同的处理
+    // 是否是同一个元素
+    const isSomeVnode = (n1, n2) => {
+        return n1.type === n2.type && n1.key === n2.key
+    }
+    // 是同一个元素的情况下进行替换
+    const unMount = (n1)=>{
+        remove(n1.el)
+    }
     const patch = (n1, n2, dom) => {
+        // 比对/更新元素
+        /**
+         * 1。判断是否是同一个元素？比对每个属性：直接替换
+         * 2.
+         */
+        if (n1 && !isSomeVnode(n1, n2)) {
+            unMount(n1)
+            // 避免更新之后调用patch 渲染不出来已更新的dom元素
+            n1 = null
+        }
+        // 针对不同的类型 组件或元素 做不同的处理
         let { shapeFlag, type } = n2
+
         switch (type) {
             case TEXT:
                 processText(n1, n2, dom)

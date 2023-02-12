@@ -16,17 +16,24 @@
         let { creatApp, h, reactive } = VueRuntimeDom
         let app = {
             setup(proxy, context) {
-                const state = reactive({ name: '张三' })
+                const state = reactive({ name: '张三' ,isflag:false})
                 const fn = () => {
                     state.name = '李四'
                 }
+                setTimeout(()=>{
+                    state.isflag = true
+                },2000)
                 return {
                     fn, state
                 }
             },
             render(x) {
                 console.log(x.state.name, 666);
-                return h('div', { style: { color: "red" }, onClick: x.fn }, ['hello', 'world', x.state.name])
+                if (x.state.isflag) {
+                    return h('div', { style: { color: "red" }, onClick: x.fn }, ['hello', 'world'])
+                } else {
+                    return h('p', { style: { color: "yellow" }, onClick: x.fn }, ['hello', 'world66'])
+                }
             }
         }
         let app1 = creatApp(app, { age: 100 })
@@ -39,8 +46,8 @@
                 return typeof x === 'string'
             }
         }
-       
-        console.log('111' instanceof  PrimitiveNumber) // true
+
+        console.log('111' instanceof PrimitiveNumber) // true
     </script>
 </body>
 
