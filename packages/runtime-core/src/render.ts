@@ -29,7 +29,7 @@ export const createdRender = (renderOptionDom) => {// 将组件变为vnode 再�
                 patch(null, subTree, dom)
                 instance.isMounted = true
             } else {
-                console.log('跟新12');
+                console.log('跟新123');
                 // 进行比对
                 let proxy = instance.proxy
                 // 旧的
