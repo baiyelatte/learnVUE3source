@@ -107,3 +107,50 @@ var permute = function (nums) {
 permute([1, 2, 3, 4]) // 第一次执行函数1入栈，然后进行递归生成第二个作用域，作用域2的for循环因为1已经入栈的原因continue跳出第一次循环，
 //然后执行第二次循环2入栈然后执行递归生成作用域3，作用域3的for循环因为1，2都入栈只会执行一次将3入栈，然后执行递归收割结果，进行回溯，回溯到作用域2
 //执行作用域2的for循环的第三次循环将3入栈，然后进入递归生成作用域4，然后因为1，3入栈所以作用域4的for循环只会执行一次将2入栈，然后递归收割结果，进行回溯，到此作用域1的for循环第一次循环结束
+
+
+
+// 扁平转树形结构
+const arrs = [
+    { id: 1, pid: 0 },
+    { id: 2, pid: 4 },
+    { id: 3, pid: 1 },
+    { id: 4, pid: 6 },
+    { id: 5, pid: 2 },
+    { id: 6, pid: 8 },
+    { id: 7, pid: 5 },
+    { id: 8, pid: 3 },
+    { id: 9, pid: 7 }
+]
+function treeArr(arrs) {
+    const result = []
+    const itemArr = {}
+    for (const arr of arrs) {
+        const id = arr.id
+        const pid = arr.pid
+        if (!itemArr[id]) {
+            itemArr[id] = {
+                children: []
+            }
+        }
+        itemArr[id] = {
+            ...arr,
+            children: itemArr[id].children
+        }
+        const targetArr = itemArr[id]
+        if (pid === 0) {
+            result.push(targetArr)
+        } else {
+            if (!itemArr[pid]) {
+                itemArr[pid] = {
+                    children: []
+                }
+            }
+            itemArr[pid].children.push(targetArr)
+        }
+
+    }
+    return result
+}
+const acc = treeArr(arrs)
+console.log(acc);

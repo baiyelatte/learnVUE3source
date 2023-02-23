@@ -71,7 +71,7 @@ const readonlyHandlers = {
 const shallowReadonlyHandlers = {
     get: shallowReadonlyGet,
     set: (target, key, prototype) => {
-        throw console.error('set on readonly');
+        throw console.error('set on readonly！');
     }
 }
 export {
