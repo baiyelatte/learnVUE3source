@@ -16,7 +16,7 @@ function createGet(isReadonly = false, isShallow = false) {
             return res  //proxy默认代理浅层
         }
         if (!isReadonly) { //不是只读进
-            // 在git操作下进行收集依赖
+            // 在get操作下进行收集依赖
             Track(target, TrackEnum.GET, key)
         }
         if (isObject(res)) {
