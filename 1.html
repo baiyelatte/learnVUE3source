@@ -24,7 +24,7 @@
     <div class="tab">
         <div class="tab2">xxx</div>
     </div>
-    <script>
+    <!-- <script>
         function boo() {
             let a = 1
             return function () {
@@ -37,8 +37,21 @@
         boo()()
         boo()()
         boo()()
+    </script> -->
+    <script src="./myPromise.js"></script>
+    <script>
+        const test = new MyPromise((res, rej) => {
+            setTimeout(() => {
+                res('nixxx')
+            }, 1000);
+        }).then((res) => {
+            console.log(res);
+            return res
+        }).then((res) => {
+            console.log(res);
+        })
+        console.log(111);
     </script>
-  
 </body>
 
 </html>
